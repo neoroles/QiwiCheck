@@ -29,7 +29,10 @@
                 <label for="phone">Номер/Логин аккаунта</label>
                 <input type="tel" name="phone" id="phone" required placeholder="+71234567890">
             </div>
-            <button type="submit">Проверить баланс</button>
+            <button type="submit" id="button_check">
+                <span>Проверить баланс</span>
+                <span v-if="loader" class="loader"></span>
+            </button>
         </form>
         <p class="result" v-if="status === true">✅ Успешно! Баланс: {{ balance }} руб.</p>
         <p class="error" v-else-if="status === false">❌ Ошибка: {{ error }}</p>
@@ -45,9 +48,11 @@
                 status: '',
                 balance: '',
                 error: '',
+                loader: '',
             }, methods: {
                 check: function (e) {
                     e.preventDefault();
+                    vue.loader = 'loader'; document.getElementById("button_check").disabled = true;
 
                     axios({method: 'post', url: 'check.php', data: new FormData(document.querySelector("form"))})
                     .then(function(response) {
@@ -60,6 +65,9 @@
                             vue.status = false;
                             vue.error = response.error;
                         }
+
+                        e.preventDefault();
+                        vue.loader = ''; document.getElementById("button_check").disabled = false;
                     });
                 }
             }
