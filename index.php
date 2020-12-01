@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
 <body>
     <div class="container" id="app">
         <div class="title">
@@ -29,16 +28,17 @@
                 <label for="phone">Номер/Логин аккаунта</label>
                 <input type="tel" name="phone" id="phone" required placeholder="+71234567890">
             </div>
-            <button type="submit" id="button_check">
+            <button type="submit" id="button_check" :disabled="status === 'load'">
                 <span>Проверить баланс</span>
-                <span v-if="loader" class="loader"></span>
+                <span v-if="status === 'load'" class="loader"></span>
+                <span v-else-if="status === true" class="status_icon">&#10004;</span>
+                <span v-else-if="status === false" class="status_icon">&#10005;</span>
             </button>
         </form>
-        <p class="result" v-if="status === true">✅ Успешно! Баланс: {{ balance }} руб.</p>
-        <p class="error" v-else-if="status === false">❌ Ошибка: {{ error }}</p>
+        <p class="result" v-if="response" v-html="response"></p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
 
     <script>
@@ -46,28 +46,29 @@
             el: '#app',
             data: {
                 status: '',
-                balance: '',
-                error: '',
-                loader: '',
+                response: '',
             }, methods: {
                 check: function (e) {
                     e.preventDefault();
-                    vue.loader = 'loader'; document.getElementById("button_check").disabled = true;
+                    this.status = 'load'; this.reponse = '';
 
-                    axios({method: 'post', url: 'check.php', data: new FormData(document.querySelector("form"))})
-                    .then(function(response) {
+                    axios.post(
+                        'check.php',
+                        new FormData(document.querySelector('form')),
+                    ).then((response) => {
                         response = response.data;
                         if(response.status === true) {
-                            vue.status = true;
-                            vue.balance = response.balance;
-                            console.log('test');
-                        } else if (response.status === false) {
-                            vue.status = false;
-                            vue.error = response.error;
-                        }
+                            this.status = true;
 
-                        e.preventDefault();
-                        vue.loader = ''; document.getElementById("button_check").disabled = false;
+                            if(response.last_payment) {
+                                this.response = "✅ Успешно! Баланс: " + response.balance + " руб.<br>Последний платёж: "+response.last_payment;
+                            } else {
+                                this.response = "✅ Успешно! Баланс: " + response.balance + " руб.";
+                            }
+                        } else if (response.status === false) {
+                            this.status = false;
+                            this.response = "❌ Ошибка: "+response.error;
+                        }
                     });
                 }
             }

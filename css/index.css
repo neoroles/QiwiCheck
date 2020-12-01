@@ -3,25 +3,31 @@ body {
   font-family: "Roboto", sans-serif;
   color: #fff;
   background: #131321;
-  animation: fadeIn 1.5s; }
+  animation: fadeIn 1.5s;
+}
 
 .title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px; }
-  .title .logo {
-    height: 50px; }
-    .title .logo svg {
-      height: 100%; }
-  .title h1 {
-    color: #fff;
-    font-size: 24px; }
-    .title h1 span {
-      opacity: .5;
-      font-weight: 400;
-      font-size: 14px;
-      margin-left: 10px; }
+  margin-bottom: 30px;
+}
+.title .logo {
+  height: 50px;
+}
+.title .logo svg {
+  height: 100%;
+}
+.title h1 {
+  color: #fff;
+  font-size: 24px;
+}
+.title h1 span {
+  opacity: 0.5;
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: 10px;
+}
 
 input {
   outline: none;
@@ -29,7 +35,7 @@ input {
   font-size: 15px;
   border-radius: 4px;
   box-shadow: none;
-  transition: .35s ease;
+  transition: 0.35s ease;
   -webkit-appearance: none;
   width: 100%;
   box-sizing: border-box;
@@ -40,7 +46,9 @@ input {
   background-image: none;
   height: 40px;
   margin-bottom: 10px;
-  color: #fff; }
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+}
 
 button[type=submit] {
   width: 100%;
@@ -49,30 +57,37 @@ button[type=submit] {
   color: #fff;
   display: block;
   text-align: center;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: uppercase;
   border-radius: 3px;
   cursor: pointer;
   padding: 12px 5px;
-  transition: .35s ease;
+  transition: 0.35s ease;
   font-size: 15px;
-  outline: none; }
+  outline: none;
+  position: relative;
+  font-family: "Roboto", sans-serif;
+}
 
 label {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   margin-bottom: 10px;
   color: #ccc;
-  display: block; }
+  display: block;
+}
 
 .container {
   max-width: 450px;
   margin: 0 auto;
   background: #19192B;
-  padding: 20px; }
+  padding: 20px;
+  border-radius: 5px;
+}
 
 .form-item {
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+}
 
 .loader {
   border: 3px solid #ccc;
@@ -81,12 +96,31 @@ label {
   animation: loader-rotate 1s linear infinite;
   width: 10px;
   height: 10px;
-  float: right;
-  margin-right: 10px; }
+  position: absolute;
+  right: 10px;
+  top: 13px;
+}
 @keyframes loader-rotate {
   0% {
-    transform: rotate(0); }
+    transform: rotate(0);
+  }
   100% {
-    transform: rotate(360deg); } }
+    transform: rotate(360deg);
+  }
+}
+
+.status_icon {
+  color: #ccc;
+  font-weight: 500;
+  font-size: 20px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.result {
+  line-height: 1.4;
+  margin: 15px 0 0 0;
+}
 
 /*# sourceMappingURL=index.css.map */
