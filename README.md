@@ -1,4 +1,4 @@
 <h1>QIWI CHECKER</h1>
 <p>С помощью номера кошелька и специального токена вы можете проверить баланс кошелька простым и удобным сервисом. Просто укажите все данные и скрипт автоматически проверит баланс кошелька и выведет его вам!</p>
-<p>Демо - <a href="https://qiwi.webxdev.pw/">https://qiwi.webxdev.pw/</a></p>
+<p>Демо - <a href="https://qiwi.webxd3v.com/">https://qiwi.webxd3v.com/</a></p>
 <h6>By WebDeveloper, tg: @webxdev</h6>
