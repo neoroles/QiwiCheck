@@ -1,27 +1,30 @@
 <?php
 require_once 'qiwi.php';
-$qiwi = new Qiwi($_POST['phone'], $_POST['token']);
+header('Content-Type: application/json');
 
-$error = $last_payment = '';
-$balanse = 0;
+$qiwi = new Qiwi('', $_POST['token']);
+$response = [];
 
-if(isset($qiwi->getBalance()["accounts"])) { // Проверка валидности
-    $status = true;
-    $balanse = $qiwi->getBalance()["accounts"][0]["balance"]["amount"]; // Проверка баланса
+if(isset($_POST['token']) && strlen($_POST['token']) == 32) {
+    if($account = $qiwi->getAccount()) {
+        $response['status'] = true;
+        $response['block'] = $account['contractInfo']['blocked'] ?? false;
+        if(isset($_POST['check']['registration'])) $response['registration'] = $account['authInfo']['registrationDate'];
+        if(isset($_POST['check']['lastIP'])) $response['lastIP'] = $account['authInfo']['ip'];
 
-    // Последняя транзакция
-    $last_payment = $qiwi->getPaymentsHistory(['rows' => '1']);
-    $last_payment['data'][0]['date'] ? $last_payment = date_format(date_create($last_payment['data'][0]['date']), 'Y.m.d H:i') : $last_payment = '';
-} else { // Невалидный аккаунт
-    $status = false;
-    $error = 'Невалидные данные!';
+        $qiwi = new Qiwi($account['authInfo']['personId'], $_POST['token']);
+        $response['balance'] = $qiwi->getBalance()["accounts"][0]["balance"]["amount"];
+        if(isset($_POST['check']['turnover'])) {
+            $limits = $qiwi->actualLimits(['types[0]' => 'TURNOVER']);
+            $response['turnover'] = $limits['limits']['RU'][0]['spent'];
+        }
+    } else {
+        $response['status'] = false;
+        $response['error'] = 'Невалидные данные!';
+    }
+} else {
+    $response['status'] = false;
+    $response['error'] = 'Невалидные данные!';
 }
 
-$response = array(
-    "status" => $status,
-    "balance" => $balanse,
-    "last_payment" => $last_payment,
-    "error" => $error,
-);
-
-echo json_encode($response, JSON_FORCE_OBJECT); // Ответ
+echo json_encode($response);

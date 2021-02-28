@@ -59,4 +59,7 @@ class Qiwi {
     public function sendMoneyToOther(Array $params = []) {
         return $this->sendRequest('sinap/api/v2/terms/1717/payments', $params, 1);
     }
+    public function actualLimits(Array $params = []) { // custom webxd3v
+        return $this->sendRequest('qw-limits/v1/persons/'. $this->_phone .'/actual-limits', $params);
+    }
 }
