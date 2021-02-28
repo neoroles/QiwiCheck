@@ -200,11 +200,11 @@ button:disabled {
   border-radius: 50%;
   -webkit-animation: loader-rotate 1s linear infinite;
           animation: loader-rotate 1s linear infinite;
-  width: 10px;
-  height: 10px;
+  width: 17px;
+  height: 17px;
   position: absolute;
   right: 10px;
-  top: 13px;
+  bottom: 12,5px;
 }
 
 @-webkit-keyframes loader-rotate {
